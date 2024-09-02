@@ -22,7 +22,7 @@ pub fn send_tcp_message(ip_address: &str, port: u16, message: &[u8]) -> Vec<u8> 
         Ok(mut stream) => {
             if let Err(e) = stream.write_all(message) {
                 eprintln!("Failed to send TCP data: {}", e);
-                return response; // Return empty response on failure
+                return response;
             }
 
             if let Err(e) = stream.read_to_end(&mut response) {
@@ -52,10 +52,8 @@ pub fn send_http_request(url_str: &str) -> Vec<u8> {
 }
 
 pub fn receive_response(response: &[u8], save_path: Option<&str>) {
-    // Print the received response
     println!("Received response:\n{}", String::from_utf8_lossy(response));
 
-    // Save the response to a file if a save path is provided
     if let Some(path) = save_path {
         match File::create(path) {
             Ok(mut file) => {
